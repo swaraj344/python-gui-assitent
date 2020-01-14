@@ -5,9 +5,16 @@ import datetime
 import wikipedia
 from webbrowser import open
 import random
+import socket
 
 
-
+def Isconnect():
+    try:
+        socket.create_connection(("www.google.com",80))
+        return True
+    except OSError:
+        pass
+    return False
 
 
 
@@ -40,7 +47,11 @@ def takecommand(): # it takes microphone input from the user and return string o
 
     try:
         print("Recognizing....")
-        query=r.recognize_sphinx(audio,language="en-US")
+        Isinternet=Isconnect()
+        if(Isinternet):
+           query=r.recognize_google(audio,language="en-IN")
+        else:
+            query=r.recognize_sphinx(audio,language="en-US")        
         print(f"You Said : {query}\n")
     except Exception as e:
         print(e)
